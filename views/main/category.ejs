@@ -1,0 +1,82 @@
+<% layout("layout") -%>
+  <!-- Inspired by https://codepen.io/transportedman/pen/NPWRGq -->
+
+<div class="carousel slide carousel-fade" data-ride="carousel">
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+        </div>
+        <div class="item">
+        </div>
+        <div class="item">
+        </div>
+    </div>
+</div>
+
+<!-- Remeber to put all the content you want on top of the slider below the slider code -->
+<div style="margin-top: 50px;" class="jumbotron" id="navbar-gap">
+	<div class="container">
+		<div class="row">
+		<div class="col-md-4 col-xs-4"></div>
+		<div class="col-md-4 col-xs-4"><img src="http://hershoppe-ph.com/wp-content/uploads/2017/03/hershoppe-logo1-1.png"></div>
+		<div class="col-md-4 col-xs-4"></div>
+		
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+	<% products.forEach(function(product){ %>
+		<div class="col-md-4">
+			<a style="text-decoration: none;" href="/product/<%= product._id %>">
+			<div style="box-shadow: none;border-radius: 10px;border:1px solid ;background-color: rgba(255, 255, 255,0.8);" class="thumbnail">
+				<% if(product.image.search("http://lorempixel.com") === 0){ %>
+				<img src="<%= product.image %>">
+			<% }else{ %>
+				<img src="http://localhost/nodejs/ecommerce/routes/images/<%= product.image %>">
+			<% } %>
+				<div class="caption">
+				<div class="text-center" id="pink-hover">
+					<h4><%= product.name %></h4>
+					<p><strong><%= product.category.name %></strong></p>
+					<p><strong>Php<%= product.price.toFixed(2) %></strong></p>
+				</div>
+				<div class="text-center">
+					<form action="/product/<%= product._id %>" method="POST">
+					<input type="hidden" name="product_id" value="<%= product._id %>">
+					<input type="hidden" name="name" value="<%= product.name %>">
+					<input type="hidden" name="priceValue" value="<%= product.price %>">
+					<input type="hidden" name="quantity" value="1">
+					<% if(user){ %>
+					<button id="pink" class="btn"><span class="glyphicon glyphicon-shopping-cart"> </span>ADD TO CART</button>
+					<% } else{ %>
+					<a id="pink" href="/signup" class="btn">Signup to Buy</a>
+					<% } %>
+					</form>
+				</div>
+				</div>
+			</div>
+			</a>
+		</div>
+		<% }); %>
+	</div>
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="text-center">
+		<ul class="pagination">
+			<li>
+				<% for(var i = 1; i <= pages; i++){ %>
+					<% if(i===1){ %>
+						<li><a href="/products/<%= category._id %>"><%= i %></a></li>
+					<% } else{ %>
+						<li><a href="/products/<%= category._id %>/page/<%= i %>"><%= i %></a></li>
+					<% } %>
+				<% } %>
+			</li>
+		</ul>
+		</div>
+		</div>
+		</div>
+</div>
